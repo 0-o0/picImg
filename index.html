@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  <link crossorigin="anonymous" rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link crossorigin="anonymous" rel="stylesheet"
+    href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.6/theme-chalk/index.min.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="👻Pic">
+  <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+  <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#4DBA87">
+  <meta name="msapplication-TileImage" content="img/icons/msapplication-icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#000000">
+  <script type="module">
+    import webGLFluidEnhanced from './wgl.mjs';
+
+    const simulationSettings = {
+      COLOR_PALETTE: ['#4685FF', '#F2F2F2', '#FFB084'],
+      HOVER: true,
+      SPLAT_KEY: 'Space',
+      BRIGHTNESS: 0.4,
+      BACK_COLOR: '#FFFFFF',
+      BLOOM: true,
+    };
+    webGLFluidEnhanced.simulation(document.querySelector('canvas'), simulationSettings);
+    window.addEventListener('ColorChanged', (e) => {
+      const { backColor } = e.detail;
+      simulationSettings.BACK_COLOR = backColor;
+      webGLFluidEnhanced.simulation(document.querySelector('canvas'), simulationSettings);
+    });
+  </script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <canvas style="position:fixed; top:0; left:0; width:100vw; height: 100vh; z-index: -1;"></canvas>
+  <script type="module" src="__INDEX__"></script>
+  <script>
+  (function() {
+    function addMouseEventListeners() {
+      const canvas = document.querySelector('canvas');
+      const mouseEvents = ['click', 'mousedown', 'mouseup', 'mousemove', 'mouseenter', 'mouseleave', 'mouseover', 'mouseout'];
+      mouseEvents.forEach(eventType => {
+        document.addEventListener(eventType, (event) => {
+          if (event.target !== canvas) {
+            const clonedEvent = new MouseEvent(event.type, event);
+            canvas.dispatchEvent(clonedEvent);
+          }
+        });
+      });
+    }
+  
+    addMouseEventListeners();
+  })();
+  </script>
+</body>
+
+</html>
